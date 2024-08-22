@@ -34,11 +34,13 @@ public class QuestionService {
     private MultimediaPathService multimediaPathService;
 
 
-    //    private QuestionMapper questionMapper;
-//    @Autowired
-//    public QuestionService(QuestionMapper questionMapper) {
-//        this.questionMapper = questionMapper;
-//    }
+    private QuestionMapper questionMapper;
+
+    @Autowired
+    public QuestionService(QuestionMapper questionMapper) {
+        this.questionMapper = questionMapper;
+    }
+
     @Transactional
     public Question create(QuestionDTO questionDTO, MultipartFile file) {
 //        Question question = questionMapper.questionDTOToQuestion(questionDTO);
@@ -61,8 +63,7 @@ public class QuestionService {
     private void saveUser(QuestionDTO questionDTO, Question question) {
         Optional<User> user = userService.findById(questionDTO.getPostedByUser());
         if (user.isEmpty()) {
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found",
-                    questionDTO.getPostedByUser());
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found", questionDTO.getPostedByUser());
         }
         question.setUser(user.get());
         user.get().getQuestions().add(question);
@@ -81,8 +82,7 @@ public class QuestionService {
 
         List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
-        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath,
-                'Q', question, null)));
+        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath, 'Q', question, null)));
         question.getMultimediaPaths().addAll(multimediaPaths);
     }
 }
