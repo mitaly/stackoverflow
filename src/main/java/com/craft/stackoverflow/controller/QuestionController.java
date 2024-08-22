@@ -21,10 +21,15 @@ public class QuestionController {
     private QuestionService questionService;
 
 
+//    @PostMapping
+//    ResponseEntity<Question> create(@RequestPart("question") QuestionDTO questionDTO,
+//                                    @RequestPart(value = "multimedia") MultipartFile file) {
+//        return ResponseEntity.ok(questionService.create(questionDTO, file));
+//    }
+
     @PostMapping
-    ResponseEntity<Question> create(@RequestPart("question") QuestionDTO questionDTO,
-                                    @RequestPart(value = "multimedia") MultipartFile file) {
-        return ResponseEntity.ok(questionService.create(questionDTO, file));
+    ResponseEntity<Question> create(@RequestBody  QuestionDTO questionDTO) {
+        return ResponseEntity.ok(questionService.create(questionDTO));
     }
 
 }
