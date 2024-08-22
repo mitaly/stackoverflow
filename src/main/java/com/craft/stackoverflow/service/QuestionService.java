@@ -48,6 +48,7 @@ public class QuestionService {
         question.setBody(questionDTO.getBody());
         question = questionRepository.save(question);
 
+        //TODO: handle error and rollback
         uploadMultimedia(file, question);
 
         saveTags(questionDTO, question);
