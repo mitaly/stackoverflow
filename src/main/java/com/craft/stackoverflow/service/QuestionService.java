@@ -1,6 +1,7 @@
 package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.dto.QuestionDTO;
+import com.craft.stackoverflow.elasticsearch.repository.QuestionElasticSearchRepository;
 import com.craft.stackoverflow.entities.MultimediaPath;
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
@@ -8,6 +9,7 @@ import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.exception.AppException;
 
 import com.craft.stackoverflow.mapper.QuestionMapper;
+import com.craft.stackoverflow.model.QuestionModel;
 import com.craft.stackoverflow.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
+    private QuestionElasticSearchRepository questionElasticSearchRepository;
+    @Autowired
     private TagService tagService;
     @Autowired
     private UserService userService;
@@ -40,6 +44,9 @@ public class QuestionService {
     public Question create(QuestionDTO questionDTO, MultipartFile file) {
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
         question = questionRepository.save(question);
+        QuestionModel questionModel = new QuestionModel(question);
+
+        System.out.println("Elastic Save");
 
         //TODO: handle error and rollback
         uploadMultimedia(file, question);
@@ -48,6 +55,9 @@ public class QuestionService {
 
         // set user
         saveUser(questionDTO, question);
+
+        //TODO: handle elastic search error and rollback
+        questionElasticSearchRepository.save(questionModel);
         return question;
     }
 
