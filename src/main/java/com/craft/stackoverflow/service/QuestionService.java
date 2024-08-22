@@ -7,6 +7,7 @@ import com.craft.stackoverflow.entities.Tag;
 import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.exception.AppException;
 
+import com.craft.stackoverflow.mapper.QuestionMapper;
 import com.craft.stackoverflow.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +33,12 @@ public class QuestionService {
     private FileUploadService fileUploadService;
     @Autowired
     private MultimediaPathService multimediaPathService;
-
-
-    private QuestionMapper questionMapper;
-
     @Autowired
-    public QuestionService(QuestionMapper questionMapper) {
-        this.questionMapper = questionMapper;
-    }
+    private QuestionMapper questionMapper;
 
     @Transactional
     public Question create(QuestionDTO questionDTO, MultipartFile file) {
-//        Question question = questionMapper.questionDTOToQuestion(questionDTO);
-        Question question = new Question();
-        question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        question.setTitle(questionDTO.getTitle());
-        question.setBody(questionDTO.getBody());
+        Question question = questionMapper.questionDTOToQuestion(questionDTO);
         question = questionRepository.save(question);
 
         //TODO: handle error and rollback
@@ -82,7 +73,8 @@ public class QuestionService {
 
         List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
-        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath, 'Q', question, null)));
+        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath,
+                'Q', question, null)));
         question.getMultimediaPaths().addAll(multimediaPaths);
     }
 }

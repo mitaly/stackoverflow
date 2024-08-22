@@ -8,11 +8,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class QuestionDTO {
-    Long id;
-    String title;
-    String body;
-    Long postedByUser;
-    int upVotes;
-    int downVotes;
-    List<String> tags;
+    private Long id;
+    private String title;
+    private String body;
+    private Long postedByUser;
+    private int upVotes;
+    private int downVotes;
+    private List<String> tags;
 }
