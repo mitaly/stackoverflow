@@ -45,8 +45,7 @@ public class QuestionService {
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
         question = questionRepository.save(question);
         QuestionModel questionModel = new QuestionModel(question);
-        //TODO: handle elastic search error and rollback
-        questionElasticSearchRepository.save(questionModel);
+
         System.out.println("Elastic Save");
 
         //TODO: handle error and rollback
@@ -56,6 +55,9 @@ public class QuestionService {
 
         // set user
         saveUser(questionDTO, question);
+
+        //TODO: handle elastic search error and rollback
+        questionElasticSearchRepository.save(questionModel);
         return question;
     }
 

@@ -25,7 +25,6 @@ public class QuestionController {
     @PostMapping
     ResponseEntity<Question> create(@RequestPart("question") String questionDTO,
                                     @RequestPart(value = "multimedia") MultipartFile file) throws JsonProcessingException {
-        System.out.println("question " + questionDTO);
         ObjectMapper objectMapper = new ObjectMapper();
         QuestionDTO data = objectMapper.readValue(questionDTO, QuestionDTO.class);
         return ResponseEntity.ok(questionService.create(data, file));
