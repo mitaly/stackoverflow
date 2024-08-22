@@ -16,10 +16,10 @@ public class MultimediaPath {
     @GeneratedValue
     Long id;
     String multimediaPath;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     Question question;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     Answer answer;
     //takes 'Q', 'A'

@@ -1,7 +1,12 @@
 package com.craft.stackoverflow.dto;
 
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+@Getter
+@Setter
 public class QuestionDTO {
     Long id;
     String title;
@@ -9,5 +14,5 @@ public class QuestionDTO {
     Long postedByUser;
     int upVotes;
     int downVotes;
-    Set<String> tags;
+    List<String> tags;
 }

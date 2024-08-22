@@ -1,8 +1,7 @@
 package com.craft.stackoverflow.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Question {
     @Id
     @GeneratedValue
@@ -20,7 +20,7 @@ public class Question {
     String title;
     String body;
     Timestamp createdAt;
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
     int upVotes;
@@ -35,7 +35,7 @@ public class Question {
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    Set<Tag> tags = new HashSet<>();
+    List<Tag> tags = new ArrayList<>();
     @OneToMany(mappedBy = "question")
-    List<MultimediaPath> multimediaPaths;
+    List<MultimediaPath> multimediaPaths = new ArrayList<>();
 }
