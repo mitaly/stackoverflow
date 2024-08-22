@@ -19,27 +19,12 @@ import java.util.*;
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
-    @Autowired
-    private FileUploadService fileUploadService;
-    @Autowired
-    private MultimediaPathService multimediaPathService;
 
 
     @PostMapping
-    ResponseEntity<Question> create(@RequestBody QuestionDTO questionDTO) {
-
-//        List<String> paths = new ArrayList<>();
-//        for (MultipartFile file : files) {
-//            String path = fileUploadService.uploadFile(file);
-//            paths.add(path);
-//        }
-//        List<MultimediaPath> multimediaPaths = new ArrayList<>();
-//        for (String path : paths) {
-//            multimediaPaths.add(multimediaPathService.create(new MultimediaPath(path,
-//                    'Q', question, null)));
-//        }
-//
-//        question.getMultimediaPaths().addAll(multimediaPaths);
-        return ResponseEntity.ok(questionService.create(questionDTO));
+    ResponseEntity<Question> create(@RequestPart("question") QuestionDTO questionDTO,
+                                    @RequestPart(value = "multimedia") MultipartFile file) {
+        return ResponseEntity.ok(questionService.create(questionDTO, file));
     }
+
 }

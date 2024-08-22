@@ -1,6 +1,7 @@
 package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.dto.QuestionDTO;
+import com.craft.stackoverflow.entities.MultimediaPath;
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
 import com.craft.stackoverflow.entities.User;
@@ -10,8 +11,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +26,11 @@ public class QuestionService {
     private TagService tagService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FileUploadService fileUploadService;
+    @Autowired
+    private MultimediaPathService multimediaPathService;
+
 
     //    private QuestionMapper questionMapper;
 //    @Autowired
@@ -31,7 +39,7 @@ public class QuestionService {
 //    }
     @Transactional
 
-    public Question create(QuestionDTO questionDTO) {
+    public Question create(QuestionDTO questionDTO, MultipartFile file) {
 //        Question question = questionMapper.questionDTOToQuestion(questionDTO);
         Question question = new Question();
         question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -39,17 +47,41 @@ public class QuestionService {
         question.setBody(questionDTO.getBody());
         question = questionRepository.save(question);
 
-        List<Tag> savedTags = tagService.saveIfNotPresent(questionDTO.getTags(), question);
-        question.getTags().addAll(savedTags);
+        uploadMultimedia(file, question);
+
+        saveTags(questionDTO, question);
 
         // set user
+        if (saveUser(questionDTO, question)) return null;
+        return question;
+    }
+
+    private boolean saveUser(QuestionDTO questionDTO, Question question) {
         Optional<User> user = userService.findById(questionDTO.getPostedByUser());
         if (user.isEmpty()) {
 //            throw new Exception("s");
-            return null;
+            return true;
         }
         question.setUser(user.get());
         user.get().getQuestions().add(question);
-        return question;
+        return false;
+    }
+
+    private void saveTags(QuestionDTO questionDTO, Question question) {
+        List<Tag> savedTags = tagService.saveIfNotPresent(questionDTO.getTags(), question);
+        question.getTags().addAll(savedTags);
+    }
+
+    private void uploadMultimedia(MultipartFile file, Question question) {
+        List<String> paths = new ArrayList<>();
+
+        String fileStoredPath = fileUploadService.uploadFile(file);
+        paths.add(fileStoredPath);
+
+        List<MultimediaPath> multimediaPaths = new ArrayList<>();
+
+        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath,
+                'Q', question, null)));
+        question.getMultimediaPaths().addAll(multimediaPaths);
     }
 }
