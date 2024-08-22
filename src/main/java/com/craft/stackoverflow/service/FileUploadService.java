@@ -13,15 +13,17 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileUploadService {
-    @Value("$multimedia.storage.path")
+    @Value("${multimedia.storage.path}")
     private String storagePath;
 
     public String uploadFile(MultipartFile multipartFile) {
         Path rootPath = Paths.get(storagePath);
+        System.out.println("storage path: " + storagePath);
         try(InputStream inputStream = multipartFile.getInputStream()) {
             String fileNameWithExtension = Paths.get(multipartFile.getOriginalFilename())
                     .getFileName().toString();
             Path path = rootPath.resolve(fileNameWithExtension);
+            System.out.println("Path "+ path.toString());
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
             return fileNameWithExtension;
         }catch (IOException e) {

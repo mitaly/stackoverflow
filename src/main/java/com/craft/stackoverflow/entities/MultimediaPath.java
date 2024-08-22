@@ -1,5 +1,6 @@
 package com.craft.stackoverflow.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,17 @@ public class MultimediaPath {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     Question question;
+
+    @JsonIgnore
+    public Question getQuestion() {
+        return question;
+    }
+
+    @JsonIgnore
+    public Answer getAnswer() {
+        return answer;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     Answer answer;

@@ -5,7 +5,6 @@ import com.craft.stackoverflow.entities.MultimediaPath;
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
 import com.craft.stackoverflow.entities.User;
-import com.craft.stackoverflow.mapper.QuestionMapper;
 import com.craft.stackoverflow.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
