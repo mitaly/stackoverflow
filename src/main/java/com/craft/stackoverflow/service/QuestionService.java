@@ -5,9 +5,12 @@ import com.craft.stackoverflow.entities.MultimediaPath;
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
 import com.craft.stackoverflow.entities.User;
+import com.craft.stackoverflow.exception.AppException;
+
 import com.craft.stackoverflow.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +40,6 @@ public class QuestionService {
 //        this.questionMapper = questionMapper;
 //    }
     @Transactional
-
     public Question create(QuestionDTO questionDTO, MultipartFile file) {
 //        Question question = questionMapper.questionDTOToQuestion(questionDTO);
         Question question = new Question();
@@ -51,19 +53,18 @@ public class QuestionService {
         saveTags(questionDTO, question);
 
         // set user
-        if (saveUser(questionDTO, question)) return null;
+        saveUser(questionDTO, question);
         return question;
     }
 
-    private boolean saveUser(QuestionDTO questionDTO, Question question) {
+    private void saveUser(QuestionDTO questionDTO, Question question) {
         Optional<User> user = userService.findById(questionDTO.getPostedByUser());
         if (user.isEmpty()) {
-//            throw new Exception("s");
-            return true;
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found",
+                    questionDTO.getPostedByUser());
         }
         question.setUser(user.get());
         user.get().getQuestions().add(question);
-        return false;
     }
 
     private void saveTags(QuestionDTO questionDTO, Question question) {
