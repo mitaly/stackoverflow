@@ -25,17 +25,19 @@ public class QuestionModel {
     int upVotes;
     int downVotes;
     List<Long> answersId = new ArrayList<>();
-    List<Comment> comments = new ArrayList<>();
+    //TODO: Handle comment in elastic search
+//    List<Comment> comments = new ArrayList<>();
     List<String> tags = new ArrayList<>();
 //    List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
+    public QuestionModel(){};
     public QuestionModel(Question question) {
         this.answersId = question.getAnswers().stream().map(answer ->
              answer.getId()
         ).toList();
         this.body = question.getBody();
         this.id = question.getId();
-        this.comments = question.getComments();
+//        this.comments = question.getComments();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedDate();
         this.downVotes = question.getDownVotes();
