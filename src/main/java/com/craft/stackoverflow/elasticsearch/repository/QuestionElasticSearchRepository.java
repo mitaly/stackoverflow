@@ -16,5 +16,31 @@ public interface QuestionElasticSearchRepository extends ElasticsearchRepository
             "      \"fields\": [\"title\", \"body\"]\n" +
             "    }\n" +
             "  }")
-    public List<QuestionModel> searchByTitleOrBody(String title);
+    public List<QuestionModel> searchByText(String text);
+
+    @Query("{\n" +
+            "     \"terms\": {\n" +
+            "        \"tags\": ?0\n" +
+            "      }\n" +
+            "  }")
+    public List<QuestionModel> searchByTags(List<String> tags);
+
+    @Query("{\n" +
+            "            \"bool\": {\n" +
+            "                \"must\": [\n" +
+            "                    {\n" +
+            "                     \"terms\": {\n" +
+            "                        \"tags\": ?1\n" +
+            "                      }\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                    \"multi_match\": {\n" +
+            "                      \"query\": \"?0\",\n" +
+            "                      \"fields\": [\"title\", \"body\"]\n" +
+            "                    }\n" +
+            "                  }\n" +
+            "                ]\n" +
+            "            }\n" +
+            "        }")
+    public List<QuestionModel> searchByTextAndTags(String text, List<String> tags);
 }

@@ -19,7 +19,8 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping
-    public ResponseEntity<List<QuestionModel>> search(@RequestParam("q") String query, @RequestParam("t") String tags) {
+    public ResponseEntity<List<QuestionModel>> search(@RequestParam("q") String query,
+                                                      @RequestParam("t") String tags) {
         return ResponseEntity.ok(searchService.search(query, tags));
     }
 
