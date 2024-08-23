@@ -21,6 +21,7 @@ public class QuestionModel {
     String title;
     String body;
     Date createdAt;
+    Date updatedAt;
     int upVotes;
     int downVotes;
     List<Long> answersId = new ArrayList<>();
@@ -35,6 +36,7 @@ public class QuestionModel {
         ).toList();
         this.body = question.getBody();
         this.id = question.getId();
+        this.updatedAt = question.getLastModifiedDate();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedDate();
         this.downVotes = question.getDownVotes();
