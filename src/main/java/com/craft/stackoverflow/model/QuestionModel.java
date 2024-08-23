@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class QuestionModel {
     Long id;
     String title;
     String body;
-    Timestamp createdAt;
+    Date createdAt;
     User user;
     int upVotes;
     int downVotes;
@@ -36,7 +37,7 @@ public class QuestionModel {
         this.id = question.getId();
         this.comments = question.getComments();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
-        this.createdAt = question.getCreatedAt();
+        this.createdAt = question.getCreatedDate();
         this.downVotes = question.getDownVotes();
         this.upVotes = question.getUpVotes();
         this.title = question.getTitle();
