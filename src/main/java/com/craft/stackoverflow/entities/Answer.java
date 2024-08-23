@@ -1,12 +1,14 @@
 package com.craft.stackoverflow.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class Answer {
     @Id
     @GeneratedValue
