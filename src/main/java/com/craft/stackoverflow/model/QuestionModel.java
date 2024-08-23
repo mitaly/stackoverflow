@@ -21,7 +21,7 @@ public class QuestionModel {
     String title;
     String body;
     Date createdAt;
-    User user;
+    Long userid;
     int upVotes;
     int downVotes;
     List<Long> answersId = new ArrayList<>();
@@ -44,6 +44,6 @@ public class QuestionModel {
         this.upVotes = question.getUpVotes();
         this.title = question.getTitle();
 //        this.multimediaPaths = question.getMultimediaPaths();
-        this.user = question.getUser();
+        this.userid = question.getUser().getId();
     }
 }
