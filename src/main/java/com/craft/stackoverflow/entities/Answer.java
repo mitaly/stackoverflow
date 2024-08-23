@@ -2,13 +2,18 @@ package com.craft.stackoverflow.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Answer {
     @Id
     @GeneratedValue
@@ -19,7 +24,12 @@ public class Answer {
     Question question;
 
     String body;
-    Timestamp createdAt;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    Date createdDate;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    Date lastModifiedDate;
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
