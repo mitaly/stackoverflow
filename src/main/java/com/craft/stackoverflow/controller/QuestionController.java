@@ -24,7 +24,6 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    //TODO: jwt expiration error
     @PostMapping
     ResponseEntity<Question> create(@RequestPart("question") String questionDTO,
                                     @RequestPart(value = "multimedia") MultipartFile file,

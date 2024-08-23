@@ -2,7 +2,7 @@ package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
-import com.craft.stackoverflow.exception.AppException;
+import com.craft.stackoverflow.exception.BusinessException;
 import com.craft.stackoverflow.repository.TagRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TagService {
@@ -40,7 +39,7 @@ public class TagService {
             }
             return savedTags;
         } catch (Exception e) {
-            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "tags.save" , tags);
+            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "tags.save" , tags);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.craft.stackoverflow.config;
 
 import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.service.JWTService;
+import com.craft.stackoverflow.util.AppConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,9 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(AppConstant.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(AppConstant.BEARER+" ")) {
             filterChain.doFilter(request, response);
             return;
         }
