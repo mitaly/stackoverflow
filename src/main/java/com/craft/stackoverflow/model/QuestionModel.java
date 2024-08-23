@@ -21,14 +21,12 @@ public class QuestionModel {
     String title;
     String body;
     Date createdAt;
-    User user;
     int upVotes;
     int downVotes;
     List<Long> answersId = new ArrayList<>();
     //TODO: Handle comment in elastic search
 //    List<Comment> comments = new ArrayList<>();
     List<String> tags = new ArrayList<>();
-//    List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
     public QuestionModel(){};
     public QuestionModel(Question question) {
@@ -37,13 +35,10 @@ public class QuestionModel {
         ).toList();
         this.body = question.getBody();
         this.id = question.getId();
-//        this.comments = question.getComments();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedDate();
         this.downVotes = question.getDownVotes();
         this.upVotes = question.getUpVotes();
         this.title = question.getTitle();
-//        this.multimediaPaths = question.getMultimediaPaths();
-        this.user = question.getUser();
     }
 }
