@@ -23,22 +23,24 @@ public class QuestionModel {
     User user;
     int upVotes;
     int downVotes;
-    List<Answer> answers = new ArrayList<>();
+    List<Long> answersId = new ArrayList<>();
     List<Comment> comments = new ArrayList<>();
-    List<Tag> tags = new ArrayList<>();
-    List<MultimediaPath> multimediaPaths = new ArrayList<>();
+    List<String> tags = new ArrayList<>();
+//    List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
     public QuestionModel(Question question) {
-        this.answers = question.getAnswers();
+        this.answersId = question.getAnswers().stream().map(answer ->
+             answer.getId()
+        ).toList();
         this.body = question.getBody();
         this.id = question.getId();
         this.comments = question.getComments();
-        this.tags = question.getTags();
+        this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedAt();
         this.downVotes = question.getDownVotes();
         this.upVotes = question.getUpVotes();
         this.title = question.getTitle();
-        this.multimediaPaths = question.getMultimediaPaths();
+//        this.multimediaPaths = question.getMultimediaPaths();
         this.user = question.getUser();
     }
 }
