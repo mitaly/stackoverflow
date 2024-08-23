@@ -24,4 +24,8 @@ public class SearchController {
         return ResponseEntity.ok(searchService.search(query, tags));
     }
 
+    @GetMapping("questions/top")
+    public ResponseEntity<List<QuestionModel>> getTopQuestions() {
+        return ResponseEntity.ok(searchService.getTopQuestions());
+    }
 }
