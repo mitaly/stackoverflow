@@ -1,7 +1,7 @@
 package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.dto.QuestionDTO;
-import com.craft.stackoverflow.elasticsearch.repository.QuestionElasticSearchRepository;
+import com.craft.stackoverflow.repository.QuestionSearchRepository;
 import com.craft.stackoverflow.entities.MultimediaPath;
 import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
@@ -26,7 +26,7 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
-    private QuestionElasticSearchRepository questionElasticSearchRepository;
+    private QuestionSearchRepository questionElasticSearchRepository;
     @Autowired
     private TagService tagService;
     @Autowired

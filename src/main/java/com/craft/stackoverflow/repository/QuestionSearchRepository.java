@@ -1,4 +1,4 @@
-package com.craft.stackoverflow.elasticsearch.repository;
+package com.craft.stackoverflow.repository;
 
 import com.craft.stackoverflow.model.QuestionModel;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface QuestionElasticSearchRepository extends ElasticsearchRepository<QuestionModel, String> {
+public interface QuestionSearchRepository extends ElasticsearchRepository<QuestionModel, String> {
 
     @Query("{\n" +
             "    \"multi_match\": {\n" +
@@ -43,4 +43,24 @@ public interface QuestionElasticSearchRepository extends ElasticsearchRepository
             "            }\n" +
             "        }")
     public List<QuestionModel> searchByTextAndTags(String text, List<String> tags);
+
+    @Query("{\n" +
+            "  \"query\": {\n" +
+            "    \"match_all\": {}\n" +
+            "  },\n" +
+            "  \"sort\": [\n" +
+            "    {\n" +
+            "      \"upVotes\": {\n" +
+            "        \"order\": \"desc\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"lastModifiedDate\": {\n" +
+            "        \"order\": \"desc\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  ],\n" +
+            "  \"size\": 10\n" +
+            "}")
+    public List<QuestionModel> findTopQuestions();
 }
