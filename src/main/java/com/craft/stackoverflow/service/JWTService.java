@@ -1,5 +1,6 @@
 package com.craft.stackoverflow.service;
 
+import com.craft.stackoverflow.entities.User;
 import org.springframework.beans.factory.annotation.Value;
 
 import io.jsonwebtoken.Claims;
@@ -33,11 +34,12 @@ public class JWTService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
+        Map<String, Object> claims = Map.of("userId", user.getId());
         return Jwts
                 .builder()
-                .setClaims(new HashMap<>())
-                .setSubject(userDetails.getUsername())
+                .setClaims(claims)
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(SignatureAlgorithm.HS256, secretKey)

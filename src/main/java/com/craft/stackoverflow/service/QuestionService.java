@@ -41,11 +41,9 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
     @Transactional
-    public Question create(QuestionDTO questionDTO, MultipartFile file) {
+    public Question create(QuestionDTO questionDTO, MultipartFile file, long userId) {
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
         question = questionRepository.save(question);
-
-
 
         //TODO: handle error and rollback
         uploadMultimedia(file, question);
@@ -53,7 +51,7 @@ public class QuestionService {
         saveTags(questionDTO, question);
 
         // set user
-        saveUser(questionDTO, question);
+        saveUser(question, userId);
         QuestionModel questionModel = new QuestionModel(question);
         System.out.println("Elastic Save" + questionModel.getTags());
         //TODO: handle elastic search error and rollback
@@ -61,10 +59,11 @@ public class QuestionService {
         return question;
     }
 
-    private void saveUser(QuestionDTO questionDTO, Question question) {
-        Optional<User> user = userService.findById(questionDTO.getPostedByUser());
+    private void saveUser(Question question, long userId) {
+        Optional<User> user = userService.findById(userId);
         if (user.isEmpty()) {
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found", questionDTO.getPostedByUser());
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found",
+                    userId);
         }
         question.setUser(user.get());
         user.get().getQuestions().add(question);
