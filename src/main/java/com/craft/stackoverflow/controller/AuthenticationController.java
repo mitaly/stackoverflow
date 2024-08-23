@@ -5,6 +5,7 @@ import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.model.LoginResponse;
 import com.craft.stackoverflow.service.AuthenticationService;
 import com.craft.stackoverflow.service.JWTService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,19 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
-    private final JWTService jwtService;
-
-    private final AuthenticationService authenticationService;
-
-    public AuthenticationController(JWTService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
-        this.authenticationService = authenticationService;
-    }
+    @Autowired
+    private JWTService jwtService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
-
         return ResponseEntity.ok(registeredUser);
     }
 

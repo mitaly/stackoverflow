@@ -22,7 +22,9 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue
     Long id;
+    @Column(unique = true)
     String username;
+    @Column(unique = true)
     String email;
     String passwordHash;
 
