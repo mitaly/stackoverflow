@@ -6,11 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,6 +22,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails{
     @Id
     @GeneratedValue
@@ -26,9 +31,13 @@ public class User implements UserDetails{
     String username;
     @Column(unique = true)
     String email;
-    String passwordHash;
-
     String password;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    Date createdDate;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    Date lastModifiedDate;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Question> questions = new ArrayList<>();
 
@@ -38,10 +47,7 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Comment> comments = new ArrayList<>();
 
-    @JsonIgnore
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+
     @JsonIgnore
     public List<Question> getQuestions() {
         return questions;
@@ -51,16 +57,19 @@ public class User implements UserDetails{
         return answers;
     }
     @JsonIgnore
+
     public List<Comment> getComments() {
         return comments;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

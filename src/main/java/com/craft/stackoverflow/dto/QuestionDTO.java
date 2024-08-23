@@ -11,7 +11,6 @@ public class QuestionDTO {
     private Long id;
     private String title;
     private String body;
-    private Long postedByUser;
     private int upVotes;
     private int downVotes;
     private List<String> tags;
