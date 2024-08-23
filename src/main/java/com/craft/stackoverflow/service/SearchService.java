@@ -1,6 +1,9 @@
 package com.craft.stackoverflow.service;
 
 
+import com.craft.stackoverflow.elasticsearch.repository.QuestionElasticSearchRepository;
+import com.craft.stackoverflow.model.QuestionModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,10 +11,13 @@ import java.util.List;
 @Service
 public class SearchService {
 
-    public String search(String query, String tags) {
+    @Autowired
+    private QuestionElasticSearchRepository questionElasticSearchRepository;
+
+    public List<QuestionModel> search(String query, String tags) {
         List<String> tagList = List.of(tags.split(","));
-        System.out.println("tagList" + tagList);
-        return query;
+        List<QuestionModel> questionModel = questionElasticSearchRepository.findBySearchOnAllFields(query);
+        return questionModel;
     }
 
 }
