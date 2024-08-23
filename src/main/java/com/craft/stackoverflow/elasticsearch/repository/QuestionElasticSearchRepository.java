@@ -11,9 +11,10 @@ import java.util.List;
 public interface QuestionElasticSearchRepository extends ElasticsearchRepository<QuestionModel, String> {
 
     @Query("{\n" +
-            "\t\"query_string\": {\n" +
-            "\t  \"query\": \"?0\"\n" +
-            "\t}\n" +
-            "}")
-    public List<QuestionModel> findBySearchOnAllFields(String title);
+            "    \"multi_match\": {\n" +
+            "      \"query\": \"?0\",\n" +
+            "      \"fields\": [\"title\", \"body\"]\n" +
+            "    }\n" +
+            "  }")
+    public List<QuestionModel> searchByTitleOrBody(String title);
 }

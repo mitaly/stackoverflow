@@ -16,7 +16,7 @@ public class SearchService {
 
     public List<QuestionModel> search(String query, String tags) {
         List<String> tagList = List.of(tags.split(","));
-        List<QuestionModel> questionModel = questionElasticSearchRepository.findBySearchOnAllFields(query);
+        List<QuestionModel> questionModel = questionElasticSearchRepository.searchByTitleOrBody(query);
         return questionModel;
     }
 
