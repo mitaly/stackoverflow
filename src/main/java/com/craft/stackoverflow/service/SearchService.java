@@ -3,7 +3,6 @@ package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.repository.QuestionSearchRepository;
 import com.craft.stackoverflow.model.QuestionModel;
-import com.craft.stackoverflow.util.AppConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,7 @@ public class SearchService {
     private QuestionSearchRepository searchRepository;
 
     public List<QuestionModel> search(String query, String tags) {
-        List<String> tagList = getTagList(tags);
+        List<String> tagList = parseTagList(tags);
         if (!query.trim().isEmpty() && !tagList.isEmpty()) {
             return searchRepository.searchByTextAndTags(query, tagList);
         } else if (!query.trim().isEmpty()) {
@@ -40,11 +39,8 @@ public class SearchService {
         return searchRepository.findTopQuestions(pageable);
     }
 
-    private List<String> getTagList(String tags) {
-        List<String> tagList = List.of(tags.split(","));
-        if (tagList.size() == AppConstant.ONE && tagList.get(0).trim().isBlank()) {
-            tagList = List.of();
-        }
-        return tagList;
+    private List<String> parseTagList(String tags) {
+        if(tags.isBlank()) return List.of();
+        return List.of(tags.split(","));
     }
 }
