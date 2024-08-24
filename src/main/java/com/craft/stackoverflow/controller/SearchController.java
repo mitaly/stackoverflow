@@ -27,7 +27,7 @@ public class SearchController {
 
     @GetMapping("questions/top")
     public ResponseEntity<Page<List<QuestionModel>>> getTopQuestions(@RequestParam(value = "page", required = true) int page,
-                                                                     @RequestParam(value = "size", required = true) int size) {
+                                                                     @RequestParam(value = "size", required = false) int size) {
         return ResponseEntity.ok(searchService.getTopQuestions(page, size));
     }
 }

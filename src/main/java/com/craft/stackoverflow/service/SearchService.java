@@ -5,6 +5,7 @@ import com.craft.stackoverflow.repository.QuestionSearchRepository;
 import com.craft.stackoverflow.model.QuestionModel;
 import com.craft.stackoverflow.util.AppConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @Service
 public class SearchService {
+    @Value("${search.default.page.size}")
+    private int pageSize;
 
     @Autowired
     private QuestionSearchRepository searchRepository;
