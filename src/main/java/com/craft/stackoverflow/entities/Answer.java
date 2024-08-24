@@ -41,7 +41,7 @@ public class Answer {
     int downVotes;
     boolean isAccepted;
     @OneToMany(mappedBy = "answer")
-    List<MultimediaPath> multimediaPaths;
+    List<MultimediaPath> multimediaPaths = new ArrayList<>();
 
     public AnswerDto toAnswerDto() {
         return new AnswerDto(this.id,this.body, this.upVotes, this.downVotes, this.question.getId());
