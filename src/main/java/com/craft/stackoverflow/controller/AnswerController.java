@@ -21,7 +21,6 @@ public class AnswerController {
 
     @PostMapping
     ResponseEntity<Answer> create(@RequestBody AnswerDto answerDto) {
-        System.out.println("Create create" + answerDto);
         return ResponseEntity.ok(answerService.create(answerDto));
     }
 
