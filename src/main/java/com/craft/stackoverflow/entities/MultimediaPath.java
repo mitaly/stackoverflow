@@ -28,12 +28,6 @@ public class MultimediaPath {
     //takes 'Q', 'A'
     char belongsTo;
 
-    public MultimediaPath(String multimediaPath, char belongsTo, Question question, Answer answer) {
-        this.multimediaPath = multimediaPath;
-        this.belongsTo = belongsTo;
-        this.question = question;
-        this.answer = answer;
-    }
     @JsonIgnore
     public Question getQuestion() {
         return question;
@@ -43,6 +37,14 @@ public class MultimediaPath {
     public Answer getAnswer() {
         return answer;
     }
+
+    public MultimediaPath(String multimediaPath, char belongsTo, Question question, Answer answer) {
+        this.multimediaPath = multimediaPath;
+        this.belongsTo = belongsTo;
+        this.question = question;
+        this.answer = answer;
+    }
+
 
 
 }
