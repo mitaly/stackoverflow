@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class SearchService {
     @Value("${search.default.page.size}")
-    private int pageSize;
+    private int defaultPageSize;
 
     @Autowired
     private QuestionSearchRepository searchRepository;
@@ -34,15 +34,15 @@ public class SearchService {
         return List.of();
     }
 
-    public Page<List<QuestionModel>> getTopQuestions(int page, int size) {
-        Pageable pageable = PageRequest.of(page,size, Sort.Direction.DESC,
+    public Page<List<QuestionModel>> getTopQuestions(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size == null ? defaultPageSize : size, Sort.Direction.DESC,
                 "upVotes", "updatedAt");
         return searchRepository.findTopQuestions(pageable);
     }
 
     private List<String> getTagList(String tags) {
         List<String> tagList = List.of(tags.split(","));
-        if(tagList.size() == AppConstant.ONE && tagList.get(0).trim().isBlank()) {
+        if (tagList.size() == AppConstant.ONE && tagList.get(0).trim().isBlank()) {
             tagList = List.of();
         }
         return tagList;
