@@ -1,6 +1,8 @@
 package com.craft.stackoverflow.repository;
 
 import com.craft.stackoverflow.model.QuestionModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
@@ -45,22 +47,7 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
     public List<QuestionModel> searchByTextAndTags(String text, List<String> tags);
 
     @Query("{\n" +
-            "  \"query\": {\n" +
             "    \"match_all\": {}\n" +
-            "  },\n" +
-            "  \"sort\": [\n" +
-            "    {\n" +
-            "      \"upVotes\": {\n" +
-            "        \"order\": \"desc\"\n" +
-            "      }\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"updatedAt\": {\n" +
-            "        \"order\": \"desc\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"size\": 10\n" +
-            "}")
-    public List<QuestionModel> findTopQuestions();
+            "  }")
+    public Page<List<QuestionModel>> findTopQuestions(Pageable pageable);
 }

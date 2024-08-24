@@ -20,11 +20,10 @@ public class Answer {
     @Id
     @GeneratedValue
     Long id;
-
     @ManyToOne
     @JoinColumn(name = "question_id")
     Question question;
-
+    @Column(length = 1000)
     String body;
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,7 +36,6 @@ public class Answer {
     User user;
     @OneToMany(mappedBy = "answer")
     List<Comment> comments = new ArrayList<>();
-
     int upVotes;
     int downVotes;
     boolean isAccepted;

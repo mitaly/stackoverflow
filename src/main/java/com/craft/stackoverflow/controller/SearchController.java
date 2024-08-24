@@ -3,6 +3,7 @@ package com.craft.stackoverflow.controller;
 import com.craft.stackoverflow.model.QuestionModel;
 import com.craft.stackoverflow.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,8 @@ public class SearchController {
     }
 
     @GetMapping("questions/top")
-    public ResponseEntity<List<QuestionModel>> getTopQuestions() {
-        return ResponseEntity.ok(searchService.getTopQuestions());
+    public ResponseEntity<Page<List<QuestionModel>>> getTopQuestions(@RequestParam(value = "page", required = true) int page,
+                                                                     @RequestParam(value = "size", required = true) int size) {
+        return ResponseEntity.ok(searchService.getTopQuestions(page, size));
     }
 }

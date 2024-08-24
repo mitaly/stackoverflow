@@ -69,19 +69,23 @@ public class QuestionService {
     }
 
     private void saveTags(QuestionDTO questionDTO, Question question) {
-        List<Tag> savedTags = tagService.saveIfNotPresent(questionDTO.getTags(), question);
-        question.getTags().addAll(savedTags);
+        if (questionDTO.getTags() != null && !questionDTO.getTags().isEmpty()) {
+            List<Tag> savedTags = tagService.saveIfNotPresent(questionDTO.getTags(), question);
+            question.getTags().addAll(savedTags);
+        }
     }
 
     private void uploadMultimedia(MultipartFile file, Question question) {
-        List<String> paths = new ArrayList<>();
+        if (file != null) {
+            List<String> paths = new ArrayList<>();
 
-        String fileStoredPath = fileUploadService.uploadFile(file);
-        paths.add(fileStoredPath);
+            String fileStoredPath = fileUploadService.uploadFile(file);
+            paths.add(fileStoredPath);
 
-        List<MultimediaPath> multimediaPaths = new ArrayList<>();
-        multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath,
-                'Q', question, null)));
-        question.getMultimediaPaths().addAll(multimediaPaths);
+            List<MultimediaPath> multimediaPaths = new ArrayList<>();
+            multimediaPaths.add(multimediaPathService.create(new MultimediaPath(fileStoredPath,
+                    'Q', question, null)));
+            question.getMultimediaPaths().addAll(multimediaPaths);
+        }
     }
 }

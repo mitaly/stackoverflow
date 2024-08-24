@@ -26,7 +26,7 @@ public class QuestionController {
 
     @PostMapping
     ResponseEntity<Question> create(@RequestPart("question") String questionDTO,
-                                    @RequestPart(value = "multimedia") MultipartFile file,
+                                    @RequestPart(value = "multimedia", required = false) MultipartFile file,
                                     @AuthenticationPrincipal User user) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 //        TODO: apply validation on dto

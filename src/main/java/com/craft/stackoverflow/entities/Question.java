@@ -17,7 +17,9 @@ public class Question {
     @Id
     @GeneratedValue
     Long id;
+    @Column(length = 200)
     String title;
+    @Column(length = 1000)
     String body;
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

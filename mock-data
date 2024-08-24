@@ -16,3 +16,26 @@
       "javascript"
   ]
 }
+
+{
+  "title": "How to create an interactive clustering visualization with point data retrieval in Python?",
+  "body": "I have implemented K-means(or any clustering algorithm like dbscan) clustering and visualized the clusters using matplotlib, but I am unsure how to set up the interactivity so that clicking on a point displays its associated data. But my main issue is should I store and struct data in a special way to retrieve them again? for example I want to identify points that are near the boundaries of clusters and retrieve their information (it could by clicking or tooltip or any methods)",
+  "tags": [
+      "python"
+  ]
+}
+
+{
+  "title": "Optimise a static website to better the performance",
+  "body":  "I have a static website that is build using gatsby. How do I measure the site performance and what all metrics should I consider to be the best top website with great user experience. Currently I use Google search console and PageSpeed Insight to determine core web vitals.
+            What all can be done to make it better with performance and seo?
+            Please list what all should I consider.
+            As I see with apple webiste, it uses a lot animation yet it has great speed and user experience how?
+
+            I tried to check core web vitals, but that isn't enough."
+  "tags": [
+      "web",
+      "deployment"
+      "gatsby"
+  ]
+}
