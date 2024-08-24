@@ -55,7 +55,7 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"lastModifiedDate\": {\n" +
+            "      \"updatedAt\": {\n" +
             "        \"order\": \"desc\"\n" +
             "      }\n" +
             "    }\n" +

@@ -22,6 +22,12 @@ public class MultimediaPath {
     @JoinColumn(name = "question_id")
     Question question;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id")
+    Answer answer;
+    //takes 'Q', 'A'
+    char belongsTo;
+
     @JsonIgnore
     public Question getQuestion() {
         return question;
@@ -31,12 +37,6 @@ public class MultimediaPath {
     public Answer getAnswer() {
         return answer;
     }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id")
-    Answer answer;
-    //takes 'Q', 'A'
-    char belongsTo;
 
     public MultimediaPath(String multimediaPath, char belongsTo, Question question, Answer answer) {
         this.multimediaPath = multimediaPath;
