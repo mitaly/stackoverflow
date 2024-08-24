@@ -18,14 +18,14 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
             "      \"fields\": [\"title\", \"body\"]\n" +
             "    }\n" +
             "  }")
-    public List<QuestionModel> searchByText(String text);
+    public Page<List<QuestionModel>> searchByText(String text, Pageable pageable);
 
     @Query("{\n" +
             "     \"terms\": {\n" +
             "        \"tags\": ?0\n" +
             "      }\n" +
             "  }")
-    public List<QuestionModel> searchByTags(List<String> tags);
+    public Page<List<QuestionModel>> searchByTags(List<String> tags, Pageable pageable);
 
     @Query("{\n" +
             "            \"bool\": {\n" +
@@ -44,7 +44,7 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
             "                ]\n" +
             "            }\n" +
             "        }")
-    public List<QuestionModel> searchByTextAndTags(String text, List<String> tags);
+    public Page<List<QuestionModel>> searchByTextAndTags(String text, List<String> tags, Pageable pageable);
 
     @Query("{\n" +
             "    \"match_all\": {}\n" +

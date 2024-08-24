@@ -21,16 +21,18 @@ public class SearchService {
     @Autowired
     private QuestionSearchRepository searchRepository;
 
-    public List<QuestionModel> search(String query, String tags) {
+    public Page<List<QuestionModel>> search(Integer page, Integer size, String query, String tags) {
+        Pageable pageable = PageRequest.of(page, size == null ? defaultPageSize : size, Sort.Direction.DESC,
+                "upVotes", "updatedAt");
         List<String> tagList = parseTagList(tags);
         if (!query.trim().isEmpty() && !tagList.isEmpty()) {
-            return searchRepository.searchByTextAndTags(query, tagList);
+            return searchRepository.searchByTextAndTags(query, tagList, pageable);
         } else if (!query.trim().isEmpty()) {
-            return searchRepository.searchByText(query);
+            return searchRepository.searchByText(query, pageable);
         } else if (!tagList.isEmpty()) {
-            return searchRepository.searchByTags(tagList);
+            return searchRepository.searchByTags(tagList, pageable);
         }
-        return List.of();
+        return Page.empty();
     }
 
     public Page<List<QuestionModel>> getTopQuestions(Integer page, Integer size) {
