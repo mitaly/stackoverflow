@@ -34,7 +34,15 @@ public class MultimediaPath {
         this.question = question;
         this.answer = answer;
     }
+    @JsonIgnore
+    public Question getQuestion() {
+        return question;
+    }
+
+    @JsonIgnore
+    public Answer getAnswer() {
+        return answer;
+    }
 
 
-   
 }
