@@ -23,7 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleAppException(BusinessException ex) {
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
         ex.printStackTrace();
         return generateGenericErrorResponse(ex.getHttpStatusCode(), ex.getMessage(), ex.getParams());
     }
