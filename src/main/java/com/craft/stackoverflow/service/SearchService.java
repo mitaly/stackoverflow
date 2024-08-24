@@ -21,22 +21,26 @@ public class SearchService {
     @Autowired
     private QuestionSearchRepository searchRepository;
 
-    public List<QuestionModel> search(String query, String tags) {
+    private Pageable getPageConfiguration(Integer page, Integer size){
+        return PageRequest.of(page, size == null ? defaultPageSize : size, Sort.Direction.DESC,
+                "upVotes", "updatedAt");
+    }
+
+    public Page<List<QuestionModel>> search(Integer page, Integer size, String query, String tags) {
+        Pageable pageable = getPageConfiguration(page, size);
         List<String> tagList = parseTagList(tags);
         if (!query.trim().isEmpty() && !tagList.isEmpty()) {
-            return searchRepository.searchByTextAndTags(query, tagList);
+            return searchRepository.searchByTextAndTags(query, tagList, pageable);
         } else if (!query.trim().isEmpty()) {
-            return searchRepository.searchByText(query);
+            return searchRepository.searchByText(query, pageable);
         } else if (!tagList.isEmpty()) {
-            return searchRepository.searchByTags(tagList);
+            return searchRepository.searchByTags(tagList, pageable);
         }
-        return List.of();
+        return Page.empty();
     }
 
     public Page<List<QuestionModel>> getTopQuestions(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size == null ? defaultPageSize : size, Sort.Direction.DESC,
-                "upVotes", "updatedAt");
-        return searchRepository.findTopQuestions(pageable);
+        return searchRepository.findTopQuestions(getPageConfiguration(page, size));
     }
 
     private List<String> parseTagList(String tags) {
