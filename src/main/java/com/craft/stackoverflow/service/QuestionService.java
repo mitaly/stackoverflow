@@ -52,7 +52,6 @@ public class QuestionService {
         linkQuestionToUser(question, userId);
 
         QuestionModel questionModel = new QuestionModel(question);
-        System.out.println("Elastic Save" + questionModel.getTags());
         //TODO: handle elastic search error and rollback
         questionElasticSearchRepository.save(questionModel);
         return question;

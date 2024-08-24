@@ -1,5 +1,6 @@
 package com.craft.stackoverflow.entities;
 
+import com.craft.stackoverflow.dto.AnswerDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -41,4 +42,8 @@ public class Answer {
     boolean isAccepted;
     @OneToMany(mappedBy = "answer")
     List<MultimediaPath> multimediaPaths;
+
+    public AnswerDto toAnswerDto() {
+        return new AnswerDto(this.id,this.body, this.upVotes, this.downVotes, this.question.getId());
+    }
 }
