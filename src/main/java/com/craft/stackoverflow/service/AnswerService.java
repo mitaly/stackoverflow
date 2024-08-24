@@ -48,6 +48,7 @@ public class AnswerService {
 
     }
 
+    //todo: Make it common method using super class
     private void uploadMultimedia(MultipartFile file, Answer answer) {
         if (file != null) {
             List<String> paths = new ArrayList<>();
