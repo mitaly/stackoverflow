@@ -1,6 +1,7 @@
 package com.craft.stackoverflow.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Data
 @EntityListeners(AuditingEntityListener.class)
 public class Answer {
     @Id
