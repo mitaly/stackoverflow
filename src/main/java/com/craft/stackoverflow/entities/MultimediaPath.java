@@ -36,13 +36,5 @@ public class MultimediaPath {
     }
 
 
-    @JsonIgnore
-    public Question getQuestion() {
-        return question;
-    }
-
-    @JsonIgnore
-    public Answer getAnswer() {
-        return answer;
-    }
+   
 }
