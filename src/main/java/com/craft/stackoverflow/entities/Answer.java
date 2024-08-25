@@ -43,6 +43,9 @@ public class Answer {
     @OneToMany(mappedBy = "answer")
     List<MultimediaPath> multimediaPaths;
 
+    @OneToMany(mappedBy = "answer")
+    List<UpVote> upvotes = new ArrayList<>();
+
     public AnswerDto toAnswerDto() {
         return new AnswerDto(this.id,this.body, this.upVotes, this.downVotes, this.question.getId());
     }

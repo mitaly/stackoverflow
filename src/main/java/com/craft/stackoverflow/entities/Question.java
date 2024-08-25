@@ -1,5 +1,6 @@
 package com.craft.stackoverflow.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,8 +31,11 @@ public class Question {
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
-    int upVotes;
-    int downVotes;
+
+
+    @OneToMany(mappedBy = "question")
+    List<UpVote> upVotes = new ArrayList<>();
+
     @OneToMany(mappedBy = "question")
     List<Answer> answers = new ArrayList<>();
     @OneToMany(mappedBy = "question")

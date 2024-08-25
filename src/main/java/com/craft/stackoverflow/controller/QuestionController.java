@@ -34,4 +34,16 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.create(data, file, user.getId()));
     }
 
+    @PatchMapping("/upvote/{questionId}/{upVoteValue}")
+    ResponseEntity<QuestionDTO> update(@PathVariable Long questionId, @PathVariable int upVoteValue, @AuthenticationPrincipal User user){
+
+
+        return ResponseEntity.ok(questionService.upvoteQuestion(questionId, upVoteValue, user));
+    }
+
+    @GetMapping("/{questionId}")
+    ResponseEntity<QuestionDTO> getQuestion(@PathVariable Long questionId){
+        return ResponseEntity.ok(questionService.getQuestionById(questionId));
+    }
+
 }
