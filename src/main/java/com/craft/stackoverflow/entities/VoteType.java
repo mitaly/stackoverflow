@@ -1,12 +1,14 @@
 package com.craft.stackoverflow.entities;
 
 public enum VoteType {
-    UPVOTE(1),
-    DOWNVOTE(-1);
+    UPVOTE("upvote"),
+    DOWNVOTE( "downvote");
 
-    public final int value;
-
-    private VoteType(int value) {
+    String value;
+    VoteType(String value) {
         this.value = value;
+    }
+    public String getValue() {
+        return this.value;
     }
 }
