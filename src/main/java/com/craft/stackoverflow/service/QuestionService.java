@@ -38,7 +38,7 @@ public class QuestionService {
     private VoteRepository voteRepository;
 
     @Transactional
-    public Question create(QuestionDTO questionDTO, MultipartFile file, long userId) {
+    public QuestionDTO create(QuestionDTO questionDTO, MultipartFile file, long userId) {
         // mapping QuestionDto to Question entity
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
         question = questionRepository.save(question);
@@ -53,7 +53,7 @@ public class QuestionService {
         QuestionModel questionModel = new QuestionModel(question);
         //TODO: handle elastic search error and rollback
         questionElasticSearchRepository.save(questionModel);
-        return question;
+        return questionMapper.questionToQuestionDTO(question);
     }
 
     public QuestionDTO getQuestionById(Long id) {

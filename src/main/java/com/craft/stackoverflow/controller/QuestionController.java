@@ -25,7 +25,7 @@ public class QuestionController {
     private QuestionService questionService;
 
     @PostMapping
-    ResponseEntity<Question> create(@RequestPart("question") String questionDTO,
+    ResponseEntity<QuestionDTO> create(@RequestPart("question") String questionDTO,
                                     @RequestPart(value = "multimedia", required = false) MultipartFile file,
                                     @AuthenticationPrincipal User user) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
