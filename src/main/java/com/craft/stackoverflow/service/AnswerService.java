@@ -23,21 +23,20 @@ public class AnswerService {
     @Autowired
     private AnswerMapper answerMapper;
 
-    @Autowired QuestionRepository questionRepository;
+    @Autowired
+    QuestionRepository questionRepository;
 
     @Transactional
     public Answer create(AnswerDto answerDto) {
         final Answer answer = answerMapper.answerDtoToAnswer(answerDto);
         Optional<Question> question = questionRepository.findById(answerDto.getQuestionId());
-        if(question.isPresent()){
+        if (question.isPresent()) {
             answer.setQuestion(question.get());
             Answer savedAnswer = answerRepository.save(answer);
             return savedAnswer;
-        }else {
+        } else {
             throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "question.not.found", answerDto.getQuestionId());
         }
-
-
     }
 
 

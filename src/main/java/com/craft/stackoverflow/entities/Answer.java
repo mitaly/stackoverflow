@@ -44,6 +44,6 @@ public class Answer {
     List<MultimediaPath> multimediaPaths;
 
     public AnswerDto toAnswerDto() {
-        return new AnswerDto(this.id,this.body, this.upVotes, this.downVotes, this.question.getId());
+        return new AnswerDto(this.id,this.body, this.question.getId());
     }
 }

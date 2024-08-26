@@ -6,6 +6,7 @@ import com.craft.stackoverflow.entities.Question;
 import com.craft.stackoverflow.entities.Tag;
 import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.service.*;
+import com.craft.stackoverflow.util.ValidatorUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,17 @@ import java.util.*;
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private ValidatorUtil validatorUtil;
 
     @PostMapping
-    ResponseEntity<Question> create(@RequestPart("question") String questionDTO,
+    ResponseEntity<Question> create(@RequestPart("question") String questionRequest,
                                     @RequestPart(value = "multimedia", required = false) MultipartFile file,
                                     @AuthenticationPrincipal User user) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-//        TODO: apply validation on dto
-        QuestionDTO data = objectMapper.readValue(questionDTO, QuestionDTO.class);
-        return ResponseEntity.ok(questionService.create(data, file, user.getId()));
+        QuestionDTO questionDto = objectMapper.readValue(questionRequest, QuestionDTO.class);
+        validatorUtil.isValid(questionDto);
+        return ResponseEntity.ok(questionService.create(questionDto, file, user.getId()));
     }
 
 }
