@@ -91,26 +91,24 @@ public class QuestionService {
             Vote vote = new Vote();
             vote.setUser(user);
             vote.setVoteType(voteType);
-            vote.setQuestion(question1);
+            vote.setPost(question1);
             vote = voteRepository.save(vote);
             List<Vote> voteList = question1.getVotes();
             voteList.add(vote);
             question1.setVotes(voteList);
-//            question1.getUpVotes().add(upVote);
         } else {
             Vote vote = usersVote.get();
             if(vote.getVoteType() == voteType) {
                 voteRepository.delete(vote);
                 List<Vote> voteList = question1.getVotes();
                 voteList.remove(vote);
-//                question1.setVotes(voteList);
             }else{
                 List<Vote> voteList = question1.getVotes();
                 voteList.remove(vote);
                 vote.setVoteType(voteType);
                 voteList.add(vote);
-                question1.setUpVotes(upVoteList);
-                upVoteRepository.save(upVote);
+                question1.setVotes(voteList);
+                voteRepository.save(vote);
             }
         }
         return questionMapper.questionToQuestionDTO(question1);

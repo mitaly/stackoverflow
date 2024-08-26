@@ -21,11 +21,8 @@ public class Vote {
     private VoteType voteType;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
-    private Question question;
-    @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post answer;
+    private Post post;
 
 
 }

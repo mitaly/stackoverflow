@@ -29,7 +29,7 @@ public class AnswerController {
         ObjectMapper objectMapper = new ObjectMapper();
 //        TODO: apply validation on dto
         AnswerDto data = objectMapper.readValue(answerDto, AnswerDto.class);
-        return ResponseEntity.ok(answerService.create(data).toAnswerDto());
+        return ResponseEntity.ok(answerService.create(data, user));
     }
 
 }

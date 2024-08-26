@@ -14,4 +14,5 @@ public class AnswerDto {
     private String body;
     private int votes;
     private Long questionId;
+    private Long userId;
 }

@@ -12,11 +12,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
     @Mapping(ignore = true, target = "tags")
-    @Mapping(ignore = true, target = "upVotes")
+    @Mapping(ignore = true, target = "votes")
     @Mapping(ignore = true, target = "user")
     Question questionDTOToQuestion(QuestionDTO questionDTO);
 
-    @Mapping(source = "question", target="upVotes", qualifiedByName = "getVotes")
+    @Mapping(source = "question", target="votes", qualifiedByName = "getVotes")
     @Mapping(source = "question", target="tags", qualifiedByName = "getTags")
     QuestionDTO questionToQuestionDTO(Question question);
 

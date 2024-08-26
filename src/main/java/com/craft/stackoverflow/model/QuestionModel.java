@@ -38,7 +38,7 @@ public class QuestionModel {
         this.updatedAt = question.getLastModifiedDate();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedDate();
-        this.upVotes = question.getUpVotes().size();
+        this.upVotes = question.getVotes().size();
         this.title = question.getTitle();
     }
 }

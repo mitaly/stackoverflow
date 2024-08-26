@@ -11,12 +11,13 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface AnswerMapper {
-
-    @Mapping(source = "answer", target="votes", qualifiedByName = "getVotes")
+    @Mapping(ignore = true, target = "votes")
     Answer answerDtoToAnswer(AnswerDto answerDto);
 
-    @Named("getVotes")
-    default int votes(Answer answer){
-        return answer.getVotesCount();
-    }
+    @Mapping(target="votes", expression = "java(answer.getVotesCount())")
+    @Mapping(target="questionId", expression = "java(answer.getUser().getId())")
+    @Mapping(target="userId", expression = "java(answer.getUser().getId())")
+    AnswerDto answerToAnswerDto(Answer answer);
+
+
 }
