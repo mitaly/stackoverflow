@@ -11,7 +11,7 @@ docker run -p 192.168.1.12:9200:9200 -d --name elasticsearch --network elastic-n
  -e "xpack.license.self_generated.type=trial" \
  docker.elastic.co/elasticsearch/elasticsearch:8.15.0
 
-sleep 10s
+sleep 10
 
 # configure the Kibana password in the ES container
 curl -u elastic:$ELASTIC_PASSWORD \
