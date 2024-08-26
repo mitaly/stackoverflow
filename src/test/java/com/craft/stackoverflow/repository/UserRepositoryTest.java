@@ -1,6 +1,7 @@
 package com.craft.stackoverflow.repository;
 
 import com.craft.stackoverflow.entities.User;
+import com.craft.stackoverflow.mock.MockData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,10 +24,7 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        User user = new User();
-        user.setEmail("mitaly@gmail.com");
-        user.setUsername("mitaly");
-        entityManager.persist(user);
+        entityManager.persist(MockData.getUser());
     }
 
     @Test
