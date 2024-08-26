@@ -25,8 +25,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
         ex.printStackTrace();
-        return generateGenericErrorResponse(ex.getHttpStatusCode(), ex.getMessage(), ex.getParams());
+        return generateGenericErrorResponse(ex.getHttpStatusCode(),
+                ex.getAdditionalInfo(),
+                ex.getMessage(), ex.getParams());
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         ex.printStackTrace();
@@ -48,15 +51,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return generateGenericErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal.server.error");
     }
-    private ResponseEntity<ErrorResponse> generateGenericErrorResponse(int httpStatusCode, String errorMessage,
+
+    private ResponseEntity<ErrorResponse> generateGenericErrorResponse(int httpStatusCode,
+                                                                       String errorMessage,
                                                                        Object... params) {
-        String message = messageSource.getMessage(errorMessage,
-                params, LocaleContextHolder.getLocale());
+        String message = getTranslatedMessage(errorMessage, params);
 
         ErrorResponse errorResponse = new ErrorResponse(
                 httpStatusCode,
                 message,
                 LocalDateTime.now()
+        );
+        return ResponseEntity.status(httpStatusCode).body(errorResponse);
+    }
+
+    private String getTranslatedMessage(String errorMessage, Object[] params) {
+        String message = messageSource.getMessage(errorMessage,
+                params, LocaleContextHolder.getLocale());
+        return message;
+    }
+
+    private ResponseEntity<ErrorResponse> generateGenericErrorResponse(int httpStatusCode,
+                                                                       Object additionalInfo,
+                                                                       String errorMessage,
+                                                                       Object... params) {
+        String message = getTranslatedMessage(errorMessage, params);
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                httpStatusCode,
+                message,
+                LocalDateTime.now(),
+                additionalInfo
         );
         return ResponseEntity.status(httpStatusCode).body(errorResponse);
     }

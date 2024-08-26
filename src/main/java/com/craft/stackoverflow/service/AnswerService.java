@@ -24,14 +24,15 @@ public class AnswerService {
     @Autowired
     private AnswerMapper answerMapper;
 
-    @Autowired QuestionRepository questionRepository;
+    @Autowired
+    QuestionRepository questionRepository;
 
     @Transactional
     public AnswerDto create(AnswerDto answerDto, User user) {
         final Answer answer = answerMapper.answerDtoToAnswer(answerDto);
         answer.setUser(user);
         Optional<Question> question = questionRepository.findById(answerDto.getQuestionId());
-        if(question.isPresent()){
+        if (question.isPresent()) {
             answer.setQuestion(question.get());
             Answer savedAnswer = answerRepository.save(answer);
             return answerMapper.answerToAnswerDto(savedAnswer);
