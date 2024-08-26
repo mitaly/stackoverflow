@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+@Entity(name = "app_user")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue
     Long id;
-    @Column(unique = true)
+    @Column
     String username;
     @Column(unique = true)
     String email;
