@@ -14,11 +14,4 @@ public class ErrorResponse {
     private int statusCode;
     private String message;
     private LocalDateTime timestamp;
-    private Object additionalInfo;
-
-    public ErrorResponse(int statusCode, String message, LocalDateTime timestamp) {
-        this.statusCode = statusCode;
-        this.message = message;
-        this.timestamp = timestamp;
-    }
 }

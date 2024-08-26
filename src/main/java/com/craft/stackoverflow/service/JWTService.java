@@ -50,9 +50,9 @@ public class JWTService {
         return jwtExpiration;
     }
 
-    public boolean isTokenValid(String token, User userDetails) {
-        final String email = extractUsername(token);
-        return (email.equals(userDetails.getEmail())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

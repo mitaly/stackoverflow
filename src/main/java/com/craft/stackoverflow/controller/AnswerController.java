@@ -35,7 +35,7 @@ public class AnswerController {
 
         validatorUtil.isValid(answerDto);
 
-        return ResponseEntity.ok(answerService.create(answerDto).toAnswerDto());
+        return ResponseEntity.ok(answerService.create(answerDto, user));
     }
 
 }

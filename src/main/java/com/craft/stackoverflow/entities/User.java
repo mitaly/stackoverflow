@@ -47,6 +47,8 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Vote> votes = new ArrayList<>();
 
     @JsonIgnore
     public List<Question> getQuestions() {
