@@ -12,7 +12,6 @@ import lombok.Setter;
 public class AnswerDto {
     private Long id;
     private String body;
-    private int upVotes;
-    private int downVotes;
+    private int votes;
     private Long questionId;
 }

@@ -1,12 +1,31 @@
 package com.craft.stackoverflow.entities;
 
-public enum Vote {
-    UPVOTE(1),
-    DOWNVOTE(-1);
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-    public final int value;
+@Entity
+@Getter
+@Data
+@EntityListeners(AuditingEntityListener.class)
+public class Vote {
 
-    private Vote(int value) {
-        this.value = value;
-    }
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+    private VoteType voteType;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post answer;
+
+
 }

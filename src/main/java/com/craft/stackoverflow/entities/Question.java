@@ -14,7 +14,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Question {
+public class Question extends Post{
     @Id
     @GeneratedValue
     Long id;
@@ -33,8 +33,6 @@ public class Question {
     User user;
 
 
-    @OneToMany(mappedBy = "question")
-    List<UpVote> upVotes = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
     List<Answer> answers = new ArrayList<>();

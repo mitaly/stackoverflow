@@ -8,8 +8,7 @@ import com.craft.stackoverflow.exception.BusinessException;
 import com.craft.stackoverflow.mapper.QuestionMapper;
 import com.craft.stackoverflow.model.QuestionModel;
 import com.craft.stackoverflow.repository.QuestionRepository;
-import com.craft.stackoverflow.repository.UpVoteRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.craft.stackoverflow.repository.VoteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
     @Autowired
-    private UpVoteRepository upVoteRepository;
+    private VoteRepository voteRepository;
 
     @Transactional
     public Question create(QuestionDTO questionDTO, MultipartFile file, long userId) {
@@ -66,48 +65,50 @@ public class QuestionService {
     }
 
     public QuestionDTO upvoteQuestion(Long questionId, int upVoteValue, User user) {
-        Optional<Question> question = questionRepository.findById(questionId);
-        Vote vote;
+
+        VoteType voteType;
         if(upVoteValue == 1){
-            vote = Vote.UPVOTE;
+            voteType = VoteType.UPVOTE;
         }else if(upVoteValue == 0){
-            vote = Vote.DOWNVOTE;
+            voteType = VoteType.DOWNVOTE;
         }else {
             throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "invalid.upvote.value", upVoteValue);
         }
+        Optional<Question> question = questionRepository.findById(questionId);
         if (question.isEmpty()) {
             throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found", questionId);
         }
         Question question1 = question.get();
-        List<UpVote> upVotes = question1.
-                getUpVotes()
+        Optional<Vote> usersVote = question1.
+                getVotes()
                 .stream()
                 .filter(upVote ->
                         Objects.equals(upVote.getUser().getId(), user.getId()))
-                .toList();
+                .findFirst();
+
         //user has not upvoted/downvoted the question.
-        if (upVotes.size() == 0) {
-            UpVote upVote = new UpVote();
-            upVote.setUser(user);
-            upVote.setVote(vote);
-            upVote.setQuestion(question1);
-            upVote = upVoteRepository.save(upVote);
-            List<UpVote> upVoteList = question1.getUpVotes();
-            upVoteList.add(upVote);
-            question1.setUpVotes(upVoteList);
+        if (usersVote.isEmpty()) {
+            Vote vote = new Vote();
+            vote.setUser(user);
+            vote.setVoteType(voteType);
+            vote.setQuestion(question1);
+            vote = voteRepository.save(vote);
+            List<Vote> voteList = question1.getVotes();
+            voteList.add(vote);
+            question1.setVotes(voteList);
 //            question1.getUpVotes().add(upVote);
         } else {
-            UpVote upVote = upVotes.get(0);
-            if(upVote.getVote() == vote) {
-                    upVoteRepository.delete(upVote);
-                List<UpVote> upVoteList = question1.getUpVotes();
-                upVoteList.remove(upVote);
-                question1.setUpVotes(upVoteList);
+            Vote vote = usersVote.get();
+            if(vote.getVoteType() == voteType) {
+                voteRepository.delete(vote);
+                List<Vote> voteList = question1.getVotes();
+                voteList.remove(vote);
+//                question1.setVotes(voteList);
             }else{
-                List<UpVote> upVoteList = question1.getUpVotes();
-                upVoteList.remove(upVote);
-                upVote.setVote(vote);
-                upVoteList.add(upVote);
+                List<Vote> voteList = question1.getVotes();
+                voteList.remove(vote);
+                vote.setVoteType(voteType);
+                voteList.add(vote);
                 question1.setUpVotes(upVoteList);
                 upVoteRepository.save(upVote);
             }
