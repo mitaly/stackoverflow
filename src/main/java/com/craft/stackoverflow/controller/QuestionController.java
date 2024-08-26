@@ -1,10 +1,7 @@
 package com.craft.stackoverflow.controller;
 
 import com.craft.stackoverflow.dto.QuestionDTO;
-import com.craft.stackoverflow.entities.MultimediaPath;
-import com.craft.stackoverflow.entities.Question;
-import com.craft.stackoverflow.entities.Tag;
-import com.craft.stackoverflow.entities.User;
+import com.craft.stackoverflow.entities.*;
 import com.craft.stackoverflow.service.*;
 import com.craft.stackoverflow.util.ValidatorUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,23 +26,23 @@ public class QuestionController {
 
     @PostMapping
     ResponseEntity<QuestionDTO> create(@RequestPart("question") String questionRequest,
-                                    @RequestPart(value = "multimedia", required = false) MultipartFile file,
-                                    @AuthenticationPrincipal User user) throws JsonProcessingException {
+                                       @RequestPart(value = "multimedia", required = false) MultipartFile file,
+                                       @AuthenticationPrincipal User user) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         QuestionDTO questionDto = objectMapper.readValue(questionRequest, QuestionDTO.class);
         validatorUtil.isValid(questionDto);
         return ResponseEntity.ok(questionService.create(questionDto, file, user.getId()));
     }
 
-    @PatchMapping("/upvote/{questionId}/{upVoteValue}")
-    ResponseEntity<QuestionDTO> update(@PathVariable Long questionId, @PathVariable int upVoteValue, @AuthenticationPrincipal User user){
-
-
-        return ResponseEntity.ok(questionService.upvoteQuestion(questionId, upVoteValue, user));
+    @PatchMapping("/upvote/{questionId}")
+    ResponseEntity<QuestionDTO> update(@PathVariable Long questionId,
+                                       @RequestParam("voteType") VoteType voteType,
+                                       @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(questionService.upvoteQuestion(questionId, voteType, user));
     }
 
     @GetMapping("/{questionId}")
-    ResponseEntity<QuestionDTO> getQuestion(@PathVariable Long questionId){
+    ResponseEntity<QuestionDTO> getQuestion(@PathVariable Long questionId) {
         return ResponseEntity.ok(questionService.getQuestionById(questionId));
     }
 
