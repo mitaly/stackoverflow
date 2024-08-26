@@ -1,4 +1,5 @@
 package com.craft.stackoverflow.controller;
+
 import com.craft.stackoverflow.dto.LoginUserDto;
 import com.craft.stackoverflow.dto.RegisterUserDto;
 import com.craft.stackoverflow.entities.User;
@@ -20,14 +21,12 @@ import java.util.Optional;
 @RestController
 public class AuthenticationController {
     @Autowired
-    private JWTService jwtService;
-    @Autowired
     private AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> signup(@RequestBody RegisterUserDto registerUserDto) {
         Optional<User> registeredUser = authenticationService.signup(registerUserDto);
-        if(registeredUser.isEmpty()) {
+        if (registeredUser.isEmpty()) {
             throw new BusinessException(HttpStatus.BAD_REQUEST.value(),
                     "user.already.exist", registerUserDto.getEmail());
         }
@@ -35,15 +34,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
-
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-
-        return ResponseEntity.ok(loginResponse);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto) {
+        return ResponseEntity.ok(authenticationService.login(loginUserDto));
     }
 }

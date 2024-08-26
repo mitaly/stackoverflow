@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Optional;
@@ -29,9 +30,9 @@ public class UserRepositoryTest {
 
     @Test
     public void whenFindByUsername_thenReturnUser() {
-        String username = "mitaly";
-        Optional<User> user = userRepository.findByUsername(username);
-        assertNotNull(user);
-        assertThat(user.get().getUsername()).isEqualTo(username);
+        String email = "mitaly@gmail.com";
+        Optional<User> user = userRepository.findByEmail(email);
+        assertTrue(user.isPresent());
+        assertThat(user.get().getEmail()).isEqualTo(email);
     }
 }
