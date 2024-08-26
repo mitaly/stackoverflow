@@ -64,7 +64,16 @@ public class QuestionService {
         throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found", id);
     }
 
-    public QuestionDTO upvoteQuestion(Long questionId, VoteType voteType, User user) {
+    public QuestionDTO upvoteQuestion(Long questionId, int upVoteValue, User user) {
+
+        VoteType voteType;
+        if(upVoteValue == 1){
+            voteType = VoteType.UPVOTE;
+        }else if(upVoteValue == 0){
+            voteType = VoteType.DOWNVOTE;
+        }else {
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "invalid.upvote.value", upVoteValue);
+        }
         Optional<Question> question = questionRepository.findById(questionId);
         if (question.isEmpty()) {
             throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found", questionId);

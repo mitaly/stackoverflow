@@ -1,8 +1,5 @@
 package com.craft.stackoverflow.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AnswerDto {
     private Long id;
-    @NotBlank
-    @Size(max = 1000)
     private String body;
     private int votes;
-    @NotNull
     private Long questionId;
     private Long userId;
 }
