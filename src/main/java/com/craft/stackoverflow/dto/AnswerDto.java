@@ -17,6 +17,8 @@ public class AnswerDto {
     @NotBlank
     @Size(max = 1000)
     private String body;
+    private int votes;
     @NotNull
     private Long questionId;
+    private Long userId;
 }

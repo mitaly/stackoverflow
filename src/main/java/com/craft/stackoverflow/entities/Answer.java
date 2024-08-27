@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Answer {
+public class Answer extends Post{
     @Id
     @GeneratedValue
     Long id;
@@ -37,13 +37,8 @@ public class Answer {
     User user;
     @OneToMany(mappedBy = "answer")
     List<Comment> comments = new ArrayList<>();
-    int upVotes;
-    int downVotes;
     boolean isAccepted;
     @OneToMany(mappedBy = "answer")
     List<MultimediaPath> multimediaPaths;
 
-    public AnswerDto toAnswerDto() {
-        return new AnswerDto(this.id,this.body, this.question.getId());
-    }
 }

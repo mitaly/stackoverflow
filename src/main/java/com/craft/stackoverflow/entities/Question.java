@@ -1,5 +1,6 @@
 package com.craft.stackoverflow.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,7 +14,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Question {
+public class Question extends Post {
     @Id
     @GeneratedValue
     Long id;
@@ -27,11 +28,9 @@ public class Question {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     Date lastModifiedDate;
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
-    int upVotes;
-    int downVotes;
     @OneToMany(mappedBy = "question")
     List<Answer> answers = new ArrayList<>();
     @OneToMany(mappedBy = "question")

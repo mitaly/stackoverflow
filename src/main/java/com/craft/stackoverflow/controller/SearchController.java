@@ -20,8 +20,8 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping
-    public ResponseEntity<Page<List<QuestionModel>>> search(@RequestParam("q") String query,
-                                                      @RequestParam("t") String tags,
+    public ResponseEntity<Page<List<QuestionModel>>> search(@RequestParam("query") String query,
+                                                      @RequestParam("tags") String tags,
                                                             @RequestParam(value = "page", required = true) Integer page,
                                                             @RequestParam(value = "size", required = false) Integer size) {
         return ResponseEntity.ok(searchService.search(page, size, query, tags));
