@@ -7,6 +7,7 @@ import com.craft.stackoverflow.exception.BusinessException;
 import com.craft.stackoverflow.model.LoginResponse;
 import com.craft.stackoverflow.service.AuthenticationService;
 import com.craft.stackoverflow.service.JWTService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> signup(@RequestBody @Valid RegisterUserDto registerUserDto) {
         Optional<User> registeredUser = authenticationService.signup(registerUserDto);
         if (registeredUser.isEmpty()) {
             throw new BusinessException(HttpStatus.BAD_REQUEST.value(),
@@ -34,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginUserDto loginUserDto) {
         return ResponseEntity.ok(authenticationService.login(loginUserDto));
     }
 }
