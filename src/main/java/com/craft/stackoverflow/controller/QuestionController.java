@@ -39,9 +39,6 @@ public class QuestionController {
                     @ApiResponse(responseCode = "201",useReturnTypeSchema = true)
             }
     )
-    ResponseEntity<Question> create(@RequestPart("question") String questionRequest,
-                                    @RequestPart(value = "multimedia", required = false) MultipartFile file,
-                                    @AuthenticationPrincipal User user) throws JsonProcessingException {
     ResponseEntity<QuestionDTO> create(@RequestPart("question") String questionRequest,
                                        @RequestPart(value = "multimedia", required = false) MultipartFile file,
                                        @AuthenticationPrincipal User user) throws JsonProcessingException {
@@ -52,6 +49,14 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
+    @Operation(
+            description = "Get Question",
+            responses = {
+                    @ApiResponse(responseCode = "400",ref = "badRequest"),
+                    @ApiResponse(responseCode = "500",ref = "internalServerError"),
+                    @ApiResponse(responseCode = "200",useReturnTypeSchema = true)
+            }
+    )
     ResponseEntity<QuestionDTO> getQuestion(@PathVariable Long questionId) {
         return ResponseEntity.ok(questionService.getQuestionById(questionId));
     }
