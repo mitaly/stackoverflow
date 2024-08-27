@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "16bfc754-a756-4e4c-a5bc-8e986469ea00",
+		"name": "stackoverflow apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1668723"
+	},
+	"item": [
+		{
+			"name": "top questions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/search/questions/top?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"search",
+						"questions",
+						"top"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create question",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "question",
+							"value": "{\n  \"title\": \"Optimise a static website to better the performance\",\n  \"body\":  \"I have a static website that is build using gatsby. How do I measure the site performance and what all metrics should I consider to be the best top website with great user experience. Currently I use Google search console and PageSpeed Insight to determine core web vitals. What all can be done to make it better with performance and seo? Please list what all should I consider. As I see with apple webiste, it uses a lot animation yet it has great speed and user experience how I tried to check core web vitals, but that isn't enough.\",\n  \"tags\": [\n      \"web\",\n      \"deployment\",\n      \"gatsby\"\n  ]\n}",
+							"type": "default"
+						},
+						{
+							"key": "multimedia",
+							"type": "file",
+							"src": "/Users/shubhamsapra/Desktop/Screenshot 2022-03-21 at 3.51.22 PM.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": "http://localhost:8080/questions"
+			},
+			"response": []
+		},
+		{
+			"name": "sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mitaly@gmail.com\",\n    \"username\": \"mitaly\",\n    \"password\": \"secret\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/auth/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "search by tag or text",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/search?query=dd&tags=&page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "dd"
+						},
+						{
+							"key": "tags",
+							"value": ""
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mitaly@gmail.com\",\n    \"password\": \"secret\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "create answer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "answer",
+							"value": "{\n    \"body\": \"dd\",\n    \"questionId\": 1\n}",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8080/answers"
+			},
+			"response": []
+		},
+		{
+			"name": "vote",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/posts/55/vote?voteType=UPVOTE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"posts",
+						"55",
+						"vote"
+					],
+					"query": [
+						{
+							"key": "voteType",
+							"value": "UPVOTE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get question by Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{AUTHORIZATION}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/questions/222"
+			},
+			"response": []
+		}
+	]
+}
