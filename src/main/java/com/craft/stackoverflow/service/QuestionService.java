@@ -2,11 +2,11 @@ package com.craft.stackoverflow.service;
 
 import com.craft.stackoverflow.dto.QuestionDto;
 import com.craft.stackoverflow.entities.*;
-import com.craft.stackoverflow.repository.QuestionSearchRepository;
+import com.craft.stackoverflow.repository.PostSearchRepository;
 import com.craft.stackoverflow.exception.BusinessException;
 
 import com.craft.stackoverflow.mapper.QuestionMapper;
-import com.craft.stackoverflow.model.QuestionModel;
+import com.craft.stackoverflow.model.PostModel;
 import com.craft.stackoverflow.repository.QuestionRepository;
 import com.craft.stackoverflow.repository.VoteRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +22,7 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
-    private QuestionSearchRepository questionElasticSearchRepository;
+    private SearchService searchService;
     @Autowired
     private TagService tagService;
     @Autowired
@@ -54,8 +54,9 @@ public class QuestionService {
         question.setUser(user);
 
         // put question in elastic search
-        QuestionModel questionModel = new QuestionModel(question);
-        questionElasticSearchRepository.save(questionModel);
+        PostModel questionModel = new PostModel(question);
+        searchService.saveQuestion(questionModel);
+
         return questionMapper.questionToQuestionDTO(question);
     }
 

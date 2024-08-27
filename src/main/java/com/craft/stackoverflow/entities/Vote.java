@@ -9,19 +9,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Data
 public class Vote {
-
     @Id
     @GeneratedValue
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Enumerated(EnumType.STRING)
     private VoteType voteType;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-
 }

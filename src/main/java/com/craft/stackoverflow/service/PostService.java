@@ -4,7 +4,9 @@ import com.craft.stackoverflow.dto.PostResponseDto;
 import com.craft.stackoverflow.entities.*;
 import com.craft.stackoverflow.exception.BusinessException;
 import com.craft.stackoverflow.mapper.PostMapper;
+import com.craft.stackoverflow.model.PostModel;
 import com.craft.stackoverflow.repository.PostRepository;
+import com.craft.stackoverflow.repository.PostSearchRepository;
 import com.craft.stackoverflow.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,18 +17,22 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class VoteService {
+public class PostService {
 
     @Autowired
     private PostRepository postRepository;
 
     @Autowired
     private VoteRepository voteRepository;
+    @Autowired
+    private PostSearchRepository searchRepository;
+    @Autowired
+    private SearchService searchService;
 
     @Autowired
     private PostMapper postMapper;
 
-    public PostResponseDto addVote(Long postId, VoteType voteType, User user) {
+    public PostResponseDto updateVote(Long postId, VoteType voteType, User user) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isEmpty()) {
@@ -46,9 +52,12 @@ public class VoteService {
         } else {
             handleUserVoteAlreadyPresent(voteType, post, usersVote);
         }
+
+        int updatedVoteCnt= post.getVotesCount();
+        // update vote for post in elastic search DB
+        searchService.updateVoteForId(updatedVoteCnt, post.getId());
+
         return postMapper.postToPostDto(post);
-
-
     }
 
     private void handleNewVoteForUser(VoteType voteType, User user, Post post) {

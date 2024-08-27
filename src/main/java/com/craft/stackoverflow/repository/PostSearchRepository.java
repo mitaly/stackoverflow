@@ -1,6 +1,6 @@
 package com.craft.stackoverflow.repository;
 
-import com.craft.stackoverflow.model.QuestionModel;
+import com.craft.stackoverflow.model.PostModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface QuestionSearchRepository extends ElasticsearchRepository<QuestionModel, String> {
+public interface PostSearchRepository extends ElasticsearchRepository<PostModel, String> {
 
     @Query("{\n" +
             "    \"multi_match\": {\n" +
@@ -18,14 +18,14 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
             "      \"fields\": [\"title\", \"body\"]\n" +
             "    }\n" +
             "  }")
-    public Page<List<QuestionModel>> searchByText(String text, Pageable pageable);
+    public Page<List<PostModel>> searchByText(String text, Pageable pageable);
 
     @Query("{\n" +
             "     \"terms\": {\n" +
             "        \"tags\": ?0\n" +
             "      }\n" +
             "  }")
-    public Page<List<QuestionModel>> searchByTags(List<String> tags, Pageable pageable);
+    public Page<List<PostModel>> searchByTags(List<String> tags, Pageable pageable);
 
     @Query("{\n" +
             "            \"bool\": {\n" +
@@ -44,10 +44,12 @@ public interface QuestionSearchRepository extends ElasticsearchRepository<Questi
             "                ]\n" +
             "            }\n" +
             "        }")
-    public Page<List<QuestionModel>> searchByTextAndTags(String text, List<String> tags, Pageable pageable);
+    public Page<List<PostModel>> searchByTextAndTags(String text, List<String> tags, Pageable pageable);
 
     @Query("{\n" +
-            "    \"match_all\": {}\n" +
+            "    \"match\": {\n" +
+            "      \"postType\": \"QUESTION\"\n" +
+            "    }\n" +
             "  }")
-    public Page<List<QuestionModel>> findTopQuestions(Pageable pageable);
+    public Page<List<PostModel>> findTopQuestions(Pageable pageable);
 }

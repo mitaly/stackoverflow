@@ -1,6 +1,6 @@
 package com.craft.stackoverflow.controller;
 
-import com.craft.stackoverflow.model.QuestionModel;
+import com.craft.stackoverflow.model.PostModel;
 import com.craft.stackoverflow.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,16 +20,16 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping
-    public ResponseEntity<Page<List<QuestionModel>>> search(@RequestParam("query") String query,
-                                                      @RequestParam("tags") String tags,
-                                                            @RequestParam(value = "page", required = true) Integer page,
-                                                            @RequestParam(value = "size", required = false) Integer size) {
+    public ResponseEntity<Page<List<PostModel>>> search(@RequestParam("query") String query,
+                                                        @RequestParam("tags") String tags,
+                                                        @RequestParam(value = "page", required = true) Integer page,
+                                                        @RequestParam(value = "size", required = false) Integer size) {
         return ResponseEntity.ok(searchService.search(page, size, query, tags));
     }
 
     @GetMapping("questions/top")
-    public ResponseEntity<Page<List<QuestionModel>>> getTopQuestions(@RequestParam(value = "page", required = true) Integer page,
-                                                                     @RequestParam(value = "size", required = false) Integer size) {
+    public ResponseEntity<Page<List<PostModel>>> getTopQuestions(@RequestParam(value = "page", required = true) Integer page,
+                                                                 @RequestParam(value = "size", required = false) Integer size) {
         return ResponseEntity.ok(searchService.getTopQuestions(page, size));
     }
 }

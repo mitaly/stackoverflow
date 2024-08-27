@@ -1,17 +1,21 @@
 package com.craft.stackoverflow.service;
 
 
-import com.craft.stackoverflow.repository.QuestionSearchRepository;
-import com.craft.stackoverflow.model.QuestionModel;
+import com.craft.stackoverflow.exception.BusinessException;
+import com.craft.stackoverflow.repository.PostSearchRepository;
+import com.craft.stackoverflow.model.PostModel;
+import com.craft.stackoverflow.util.AppConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SearchService {
@@ -19,14 +23,14 @@ public class SearchService {
     private int defaultPageSize;
 
     @Autowired
-    private QuestionSearchRepository searchRepository;
+    private PostSearchRepository searchRepository;
 
     private Pageable getPageConfiguration(Integer page, Integer size){
         return PageRequest.of(page, size == null ? defaultPageSize : size, Sort.Direction.DESC,
-                "upVotes", "updatedAt");
+                "votes", "updatedAt");
     }
 
-    public Page<List<QuestionModel>> search(Integer page, Integer size, String query, String tags) {
+    public Page<List<PostModel>> search(Integer page, Integer size, String query, String tags) {
         Pageable pageable = getPageConfiguration(page, size);
         List<String> tagList = parseTagList(tags);
         if (!query.trim().isEmpty() && !tagList.isEmpty()) {
@@ -39,12 +43,36 @@ public class SearchService {
         return Page.empty();
     }
 
-    public Page<List<QuestionModel>> getTopQuestions(Integer page, Integer size) {
+    public Page<List<PostModel>> getTopQuestions(Integer page, Integer size) {
         return searchRepository.findTopQuestions(getPageConfiguration(page, size));
+    }
+
+    public void updateVoteForId(int voteCount, Long id) {
+        Optional<PostModel> postModel = searchRepository.findById(String.valueOf(id));
+        if(postModel.isEmpty()) {
+            throw new BusinessException(HttpStatus.NOT_FOUND.value(), "post.not.found", id);
+        }
+        postModel.get().setVotes(voteCount);
+        searchRepository.save(postModel.get());
+    }
+
+    public void saveAnswer(PostModel answerModel) {
+        searchRepository.save(answerModel);
+        Optional<PostModel> questionModel = searchRepository.findById(answerModel.getQuestionPostId());
+        if (questionModel.isEmpty()) {
+            throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found", answerModel.getQuestionPostId())
+                    ;
+        }
+        questionModel.get().getAnswerPostIds().add(answerModel.getId());
+        searchRepository.save(questionModel.get());
+    }
+
+    public void saveQuestion(PostModel questionModel) {
+        searchRepository.save(questionModel);
     }
 
     private List<String> parseTagList(String tags) {
         if(tags.isBlank()) return List.of();
-        return List.of(tags.split(","));
+        return List.of(tags.split(AppConstant.TAG_SEPARATOR));
     }
 }
