@@ -42,17 +42,20 @@ public class QuestionService {
     public Question create(QuestionDTO questionDTO, MultipartFile file, long userId) {
         // mapping QuestionDto to Question entity
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
+        // persist the question
         question = questionRepository.save(question);
 
+        // upload media files and link media files to question
         uploadMultimedia(file, question);
 
+        // link tags to question
         saveTags(questionDTO, question);
 
         //linking question and user
         linkQuestionToUser(question, userId);
 
+        // put question in elastic search
         QuestionModel questionModel = new QuestionModel(question);
-        //TODO: handle elastic search error and rollback
         questionElasticSearchRepository.save(questionModel);
         return question;
     }
