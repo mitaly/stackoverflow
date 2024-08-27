@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
+
 @Getter
 @Setter
-public class QuestionDTO {
+public class QuestionDto {
     private Long id;
     @NotBlank
     @Size(max = 200)

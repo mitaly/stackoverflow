@@ -1,7 +1,6 @@
 package com.craft.stackoverflow.service;
 
-import com.craft.stackoverflow.dto.PostDto;
-import com.craft.stackoverflow.dto.QuestionDTO;
+import com.craft.stackoverflow.dto.PostResponseDto;
 import com.craft.stackoverflow.entities.*;
 import com.craft.stackoverflow.exception.BusinessException;
 import com.craft.stackoverflow.mapper.PostMapper;
@@ -27,7 +26,7 @@ public class VoteService {
     @Autowired
     private PostMapper postMapper;
 
-    public PostDto addVote(Long postId, VoteType voteType, User user) {
+    public PostResponseDto addVote(Long postId, VoteType voteType, User user) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isEmpty()) {
@@ -43,32 +42,42 @@ public class VoteService {
 
         //user has not upvoted/downvoted the question.
         if (usersVote.isEmpty()) {
-            Vote vote = new Vote();
-            vote.setUser(user);
-            vote.setVoteType(voteType);
-            vote.setPost(post);
-            vote = voteRepository.save(vote);
-            List<Vote> voteList = post.getVotes();
-            voteList.add(vote);
-            post.setVotes(voteList);
+            handleNewVoteForUser(voteType, user, post);
         } else {
-            Vote vote = usersVote.get();
-            if(vote.getVoteType() == voteType) {
-                voteRepository.delete(vote);
-                List<Vote> voteList = post.getVotes();
-                voteList.remove(vote);
-            }else{
-                List<Vote> voteList = post.getVotes();
-                voteList.remove(vote);
-                vote.setVoteType(voteType);
-                voteList.add(vote);
-                post.setVotes(voteList);
-                voteRepository.save(vote);
-            }
+            handleUserVoteAlreadyPresent(voteType, post, usersVote);
         }
         return postMapper.postToPostDto(post);
 
 
+    }
+
+    private void handleNewVoteForUser(VoteType voteType, User user, Post post) {
+        Vote vote = new Vote();
+        vote.setUser(user);
+        vote.setVoteType(voteType);
+        vote.setPost(post);
+        vote = voteRepository.save(vote);
+        List<Vote> voteList = post.getVotes();
+        voteList.add(vote);
+        post.setVotes(voteList);
+    }
+
+    private void handleUserVoteAlreadyPresent(VoteType voteType, Post post, Optional<Vote> usersVote) {
+        Vote vote = usersVote.get();
+        // user trying to cast same vote, then delete the vote
+        if(vote.getVoteType() == voteType) {
+            voteRepository.delete(vote);
+            List<Vote> voteList = post.getVotes();
+            voteList.remove(vote);
+        }else{
+            // remove previous vote and cast new vote for that user
+            List<Vote> voteList = post.getVotes();
+            voteList.remove(vote);
+            vote.setVoteType(voteType);
+            voteList.add(vote);
+            post.setVotes(voteList);
+            voteRepository.save(vote);
+        }
     }
 
 }

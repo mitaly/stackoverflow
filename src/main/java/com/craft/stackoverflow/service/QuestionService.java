@@ -1,6 +1,6 @@
 package com.craft.stackoverflow.service;
 
-import com.craft.stackoverflow.dto.QuestionDTO;
+import com.craft.stackoverflow.dto.QuestionDto;
 import com.craft.stackoverflow.entities.*;
 import com.craft.stackoverflow.repository.QuestionSearchRepository;
 import com.craft.stackoverflow.exception.BusinessException;
@@ -38,7 +38,7 @@ public class QuestionService {
     private VoteRepository voteRepository;
 
     @Transactional
-    public QuestionDTO create(QuestionDTO questionDTO, MultipartFile file, long userId) {
+    public QuestionDto create(QuestionDto questionDTO, MultipartFile file, User user) {
         // mapping QuestionDto to Question entity
         Question question = questionMapper.questionDTOToQuestion(questionDTO);
         // persist the question
@@ -51,7 +51,7 @@ public class QuestionService {
         saveTags(questionDTO, question);
 
         //linking question and user
-        linkQuestionToUser(question, userId);
+        question.setUser(user);
 
         // put question in elastic search
         QuestionModel questionModel = new QuestionModel(question);
@@ -59,7 +59,7 @@ public class QuestionService {
         return questionMapper.questionToQuestionDTO(question);
     }
 
-    public QuestionDTO getQuestionById(Long id) {
+    public QuestionDto getQuestionById(Long id) {
         Optional<Question> question = questionRepository.findById(id);
         if (question.isPresent()) {
             return questionMapper.questionToQuestionDTO(question.get());
@@ -67,17 +67,7 @@ public class QuestionService {
         throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found", id);
     }
 
-
-    private void linkQuestionToUser(Question question, long userId) {
-        Optional<User> user = userService.findById(userId);
-        if (user.isEmpty()) {
-            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "user.id.not.found", userId);
-        }
-        question.setUser(user.get());
-        user.get().getQuestions().add(question);
-    }
-
-    private void saveTags(QuestionDTO questionDTO, Question question) {
+    private void saveTags(QuestionDto questionDTO, Question question) {
         if (questionDTO.getTags() != null && !questionDTO.getTags().isEmpty()) {
             List<Tag> savedTags = tagService.saveIfNotPresent(questionDTO.getTags(), question);
             question.getTags().addAll(savedTags);

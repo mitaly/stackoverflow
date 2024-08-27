@@ -36,8 +36,9 @@ public class AnswerService {
             answer.setQuestion(question.get());
             Answer savedAnswer = answerRepository.save(answer);
             return answerMapper.answerToAnswerDto(savedAnswer);
-        }else {
-            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "question.not.found", answerDto.getQuestionId());
+        } else {
+            throw new BusinessException(HttpStatus.NOT_FOUND.value(), "question.not.found",
+                    answerDto.getQuestionId());
         }
 
 

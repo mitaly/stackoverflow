@@ -14,7 +14,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Question extends Post{
+public class Question extends Post {
     @Id
     @GeneratedValue
     Long id;
@@ -28,12 +28,9 @@ public class Question extends Post{
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     Date lastModifiedDate;
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
-
-
-
     @OneToMany(mappedBy = "question")
     List<Answer> answers = new ArrayList<>();
     @OneToMany(mappedBy = "question")

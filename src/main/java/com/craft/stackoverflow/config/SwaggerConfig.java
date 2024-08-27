@@ -41,9 +41,20 @@ public class SwaggerConfig {
                                         "    \"timestamp\": \"2024-08-27T11:54:28.494569\",\n" +
                                         "    \"additionalInfo\": null\n" +
                                         "}"))));
+        ApiResponse notFound= new ApiResponse().content(
+                new Content().addMediaType("application/json",
+                        new io.swagger.v3.oas.models.media.MediaType().addExamples("default",
+                                new Example().value("{\n" +
+                                        "    \"statusCode\": 404,\n" +
+                                        "    \"message\": \"reason\",\n" +
+                                        "    \"timestamp\": \"2024-08-27T11:54:28.494569\",\n" +
+                                        "    \"additionalInfo\": null\n" +
+                                        "}"))));
+
         Components components = new Components();
         components.addResponses("badRequest",badRequest);
         components.addResponses("internalServerError", internalServerError);
+        components.addResponses("notFound", notFound);
         return new OpenAPI().components(components)
                 .info(new Info()
                         .title("Springboot_Swagger Project OpenAPI Docs")

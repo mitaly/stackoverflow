@@ -2,8 +2,6 @@ package com.craft.stackoverflow.controller;
 
 
 import com.craft.stackoverflow.dto.AnswerDto;
-import com.craft.stackoverflow.dto.QuestionDTO;
-import com.craft.stackoverflow.entities.Answer;
 import com.craft.stackoverflow.entities.User;
 import com.craft.stackoverflow.service.AnswerService;
 import com.craft.stackoverflow.util.ValidatorUtil;
@@ -15,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

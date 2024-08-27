@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Getter
 @Data
-@EntityListeners(AuditingEntityListener.class)
 public class Vote {
 
     @Id
@@ -16,7 +15,7 @@ public class Vote {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     private VoteType voteType;
 
