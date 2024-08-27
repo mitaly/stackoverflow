@@ -22,7 +22,7 @@ public class QuestionModel {
     String body;
     Date createdAt;
     Date updatedAt;
-    int upVotes;
+    int votes;
     List<Long> answersId = new ArrayList<>();
     //TODO: Handle comment in elastic search
 //    List<Comment> comments = new ArrayList<>();
@@ -38,7 +38,7 @@ public class QuestionModel {
         this.updatedAt = question.getLastModifiedDate();
         this.tags = question.getTags().stream().map(t -> t.getName()).toList();
         this.createdAt = question.getCreatedDate();
-        this.upVotes = question.getVotes().size();
+        this.votes = question.getVotes().size();
         this.title = question.getTitle();
     }
 }
